@@ -9,7 +9,7 @@ public abstract class BaseScreen {
         initialize();
     }
 
-    abstract void initialize();
+    protected abstract void initialize();
 
     public abstract MdxWorld getWorld();
 }

@@ -5,12 +5,14 @@ import com.artemis.ComponentMapper;
 import com.artemis.InterpolatingEntitySystem;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.math.Vector2;
+import com.youwin.spaceshooter.components.HitboxComponent;
 import com.youwin.spaceshooter.components.PlayerControllerComponent;
 import com.youwin.spaceshooter.components.PositionComponent;
 
 @Wire
 public class MoveEntitySystem extends InterpolatingEntitySystem {
     private ComponentMapper<PositionComponent> positionMapper;
+    private ComponentMapper<HitboxComponent> hitboxMapper;
     private ComponentMapper<PlayerControllerComponent> playerControllerMapper;
 
     public MoveEntitySystem() {
@@ -26,8 +28,15 @@ public class MoveEntitySystem extends InterpolatingEntitySystem {
             targetDirection.set(playerTargetDirection);
             playerTargetDirection.set(Vector2.Zero);
         }
+
         position.getPoint().preUpdate();
         position.getPoint().add(targetDirection);
+
+        if (hitboxMapper.has(entityId)) {
+            HitboxComponent hitbox = hitboxMapper.get(entityId);
+            hitbox.getCollisionBox().set(position.getPoint());
+            hitbox.getCollisions().set(position.getPoint());
+        }
     }
 
     @Override
