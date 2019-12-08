@@ -18,47 +18,47 @@ import org.mini2Dx.core.game.BasicGame;
 import org.mini2Dx.core.graphics.Graphics;
 
 public class SpaceShooter extends BasicGame {
-  public static final String GAME_IDENTIFIER = "com.youwin.spaceshooter";
-  public static final Logger LOG = new Logger("[Main]", Logger.INFO);
+    public static final String GAME_IDENTIFIER = "com.youwin.spaceshooter";
+    public static final Logger LOG = new Logger("[Main]", Logger.INFO);
 
-  private Texture texture;
+    private Texture texture;
 
-  private MdxWorld world;
+    private MdxWorld world;
 
-  private BaseScreen currentScreen;
+    private BaseScreen currentScreen;
 
-  @Override
-  public void initialise() {
-    Gdx.app.setLogLevel(Logger.INFO);
-    texture = new Texture("mini2Dx.png");
+    @Override
+    public void initialise() {
+        Gdx.app.setLogLevel(Logger.INFO);
+        texture = new Texture("mini2Dx.png");
 
-    // TODO ECS test
-    currentScreen = new TestScreen();
-    world = currentScreen.getWorld();
+        // TODO ECS test
+        currentScreen = new TestScreen();
+        world = currentScreen.getWorld();
 
-  }
-
-  @Override
-  public void update(float delta) {
-    world.setDelta(delta);
-    world.process();
-
-    // TODO debug only
-    if (Gdx.input.isKeyPressed(Keys.ESCAPE)) {
-      Gdx.app.exit();
     }
-  }
 
-  @Override
-  public void interpolate(float alpha) {
-    world.setAlpha(alpha);
-    world.interpolate();
-  }
+    @Override
+    public void update(float delta) {
+        world.setDelta(delta);
+        world.process();
 
-  @Override
-  public void render(Graphics g) {
-    world.render(g);
+        // TODO debug only
+        if (Gdx.input.isKeyPressed(Keys.ESCAPE)) {
+            Gdx.app.exit();
+        }
+    }
 
-    // g.drawTexture(texture, 0f, 0f);
-  }
+    @Override
+    public void interpolate(float alpha) {
+        world.setAlpha(alpha);
+        world.interpolate();
+    }
+
+    @Override
+    public void render(Graphics g) {
+        world.render(g);
+
+        // g.drawTexture(texture, 0f, 0f);
+    }
 }
