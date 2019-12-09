@@ -11,10 +11,16 @@ import com.youwin.spaceshooter.screens.TestScreen;
 
 import org.mini2Dx.core.game.BasicGame;
 import org.mini2Dx.core.graphics.Graphics;
+import org.mini2Dx.core.graphics.viewport.FitViewport;
+import org.mini2Dx.core.graphics.viewport.Viewport;
 
 public class SpaceShooter extends BasicGame {
     public static final String GAME_IDENTIFIER = "com.youwin.spaceshooter";
     private static final Logger LOG = new Logger("[Main]", Logger.INFO);
+
+    private Viewport viewport;
+    private float gameWidth = 800;
+    private float gameHeight = 600;
 
     private MdxWorld world;
 
@@ -23,6 +29,8 @@ public class SpaceShooter extends BasicGame {
     @Override
     public void initialise() {
         Gdx.app.setLogLevel(Logger.INFO);
+
+        viewport = new FitViewport(gameWidth, gameHeight);
 
         currentScreen = new TestScreen();
         world = currentScreen.getWorld();
@@ -49,6 +57,8 @@ public class SpaceShooter extends BasicGame {
 
     @Override
     public void render(Graphics g) {
+        viewport.apply(g);
+
         world.render(g);
     }
 }
