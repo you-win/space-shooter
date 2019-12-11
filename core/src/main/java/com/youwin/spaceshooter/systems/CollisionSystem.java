@@ -29,8 +29,8 @@ public class CollisionSystem extends IteratingSystem {
         Array<CollisionBox> collisions = hitbox.getCollisions().getElementsWithinArea(hitbox.getCollisionBox());
 
         if (nameMapper.has(entityId) && nameMapper.get(entityId).getName().equals("Player")) {
-            LOG.info(Float.toString(hitbox.getCollisionBox().getCenterX()));
-            LOG.info(Float.toString(hitbox.getCollisionBox().getCenterY()));
+            LOG.info("Player pos: " + Float.toString(hitbox.getCollisionBox().getCenterX()) + ", "
+                    + Float.toString(hitbox.getCollisionBox().getCenterY()));
         }
 
         if (collisions.size > 0) {
