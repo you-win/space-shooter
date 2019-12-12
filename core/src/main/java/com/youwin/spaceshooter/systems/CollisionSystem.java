@@ -1,5 +1,7 @@
 package com.youwin.spaceshooter.systems;
 
+import java.util.ArrayList;
+
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.systems.IteratingSystem;
@@ -14,6 +16,7 @@ public class CollisionSystem extends IteratingSystem {
     private static final Logger LOG = new Logger("[CollisionSystem]", Logger.INFO);
 
     ComponentMapper<HitboxComponent> hitboxMapper;
+    // TODO debug only maybe
     ComponentMapper<NameComponent> nameMapper;
 
     public CollisionSystem() {

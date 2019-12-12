@@ -12,6 +12,7 @@ import com.youwin.spaceshooter.systems.CollisionSystem;
 import com.youwin.spaceshooter.systems.MoveEntitySystem;
 import com.youwin.spaceshooter.systems.PlayerControllerSystem;
 import com.youwin.spaceshooter.systems.RenderEntitySystem;
+import com.youwin.spaceshooter.utils.GameManager;
 
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
@@ -28,14 +29,14 @@ public class TestScreen extends BasicGameScreen {
 
     private MdxWorld world;
     private Viewport viewport;
-    private float gameWidth = 800;
-    private float gameHeight = 600;
+    private float screenWidth = GameManager.screenWidth;
+    private float screenHeight = GameManager.screenHeight;
 
     @Override
     public void initialise(GameContainer gc) {
         Gdx.app.setLogLevel(Logger.INFO);
 
-        viewport = new FitViewport(gameWidth, gameHeight);
+        viewport = new FitViewport(screenWidth, screenHeight);
 
         WorldConfiguration worldConfiguration = new WorldConfiguration();
         worldConfiguration //

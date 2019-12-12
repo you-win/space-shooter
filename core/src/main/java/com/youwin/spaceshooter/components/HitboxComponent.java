@@ -2,6 +2,7 @@ package com.youwin.spaceshooter.components;
 
 import com.artemis.Component;
 import com.badlogic.gdx.math.Vector2;
+import com.youwin.spaceshooter.systems.CollisionSystem;
 
 import org.mini2Dx.core.collisions.RegionQuadTree;
 import org.mini2Dx.core.engine.geom.CollisionBox;

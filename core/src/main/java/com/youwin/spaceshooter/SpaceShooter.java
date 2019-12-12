@@ -6,16 +6,14 @@ import com.badlogic.gdx.utils.Logger;
 import com.youwin.spaceshooter.screens.BaseScreen;
 import com.youwin.spaceshooter.screens.TestScreen;
 import com.youwin.spaceshooter.screens.TitleScreen;
+import com.youwin.spaceshooter.utils.GameManager;
 
 import org.mini2Dx.core.game.ScreenBasedGame;
 
 public class SpaceShooter extends ScreenBasedGame {
     public static final String GAME_IDENTIFIER = "com.youwin.spaceshooter";
+    public static final GameManager gameManager = new GameManager();
     private static final Logger LOG = new Logger("[Main]", Logger.INFO);
-
-    private MdxWorld world;
-
-    private BaseScreen currentScreen;
 
     @Override
     public void initialise() {
