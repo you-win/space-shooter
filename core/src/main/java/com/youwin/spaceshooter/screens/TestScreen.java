@@ -40,16 +40,17 @@ public class TestScreen extends BasicGameScreen {
 
         WorldConfiguration worldConfiguration = new WorldConfiguration();
         worldConfiguration //
-                .setSystem(new MoveEntitySystem()) //
                 .setSystem(new PlayerControllerSystem()) //
+                .setSystem(new MoveEntitySystem(true)) //
                 .setSystem(new CollisionSystem()) //
                 .setSystem(new RenderEntitySystem());
 
         world = new MdxWorld(worldConfiguration);
 
-        PlayerBuilder.createPlayer(world, new Vector2(0f, 0f));
-        EnemyBuilder.createEnemy(world, new Vector2(25f, 25f));
-        EnemyBuilder.createEnemy(world, new Vector2(50f, 100f));
+        PlayerBuilder.createPlayer(world, new Vector2(0f, 0f), 5f);
+        EnemyBuilder.createEnemy(world, new Vector2(300f, 25f), "test");
+        EnemyBuilder.createEnemy(world, new Vector2(50f, 400f), "test2");
+        EnemyBuilder.createEnemy(world, new Vector2(300f, 400f), "test3");
 
         LOG.info("Finished initialization");
     }

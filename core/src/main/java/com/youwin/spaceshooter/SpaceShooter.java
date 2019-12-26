@@ -1,9 +1,6 @@
 package com.youwin.spaceshooter;
 
-import com.artemis.MdxWorld;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.utils.Logger;
-import com.youwin.spaceshooter.screens.BaseScreen;
 import com.youwin.spaceshooter.screens.TestScreen;
 import com.youwin.spaceshooter.screens.TitleScreen;
 import com.youwin.spaceshooter.utils.GameManager;

@@ -9,36 +9,61 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Logger;
 import com.youwin.spaceshooter.components.HitboxComponent;
 import com.youwin.spaceshooter.components.NameComponent;
+import com.youwin.spaceshooter.components.PositionComponent;
+import com.youwin.spaceshooter.utils.GameManager;
 
+import org.mini2Dx.core.collisions.RegionQuadTree;
 import org.mini2Dx.core.engine.geom.CollisionBox;
+import org.mini2Dx.core.engine.geom.CollisionShape;
 
+/*
+It's most efficient for the collision system to encompass the entire play area, probably.
+*/
 public class CollisionSystem extends IteratingSystem {
     private static final Logger LOG = new Logger("[CollisionSystem]", Logger.INFO);
 
-    ComponentMapper<HitboxComponent> hitboxMapper;
+    private ComponentMapper<HitboxComponent> hitboxMapper;
+    private ComponentMapper<PositionComponent> positionMapper;
     // TODO debug only maybe
-    ComponentMapper<NameComponent> nameMapper;
+    private ComponentMapper<NameComponent> nameMapper;
+
+    private static RegionQuadTree<CollisionBox> collisions;
 
     public CollisionSystem() {
-        super(Aspect.all(HitboxComponent.class));
+        super(Aspect.all(HitboxComponent.class, PositionComponent.class));
+        collisions = new RegionQuadTree<CollisionBox>(9, 4, 0, 0, GameManager.screenWidth, GameManager.screenHeight);
+    }
+
+    public CollisionSystem(float width, float height) {
+        super(Aspect.all(HitboxComponent.class, PositionComponent.class));
+        collisions = new RegionQuadTree<CollisionBox>(9, 4, 0, 0, width, height);
     }
 
     @Override
     protected void process(int entityId) {
         HitboxComponent hitbox = hitboxMapper.get(entityId);
+        NameComponent name = nameMapper.get(entityId);
 
-        // TODO will need to add the other hitboxes to this thingy somehow
-        // Probably use some big static manager
-        Array<CollisionBox> collisions = hitbox.getCollisions().getElementsWithinArea(hitbox.getCollisionBox());
+        Array<CollisionBox> collisionList = collisions.getElementsWithinArea(hitbox.getCollisionBox());
 
-        if (nameMapper.has(entityId) && nameMapper.get(entityId).getName().equals("Player")) {
-            LOG.info("Player pos: " + Float.toString(hitbox.getCollisionBox().getCenterX()) + ", "
-                    + Float.toString(hitbox.getCollisionBox().getCenterY()));
+        // An object can collide with itself
+        if (collisionList.size > 1) {
+            for (CollisionShape collision : collisionList) {
+                if (collision.getId() != entityId) {
+                    int collisionEntityId = collision.getId();
+
+                    PositionComponent position = positionMapper.get(entityId);
+                    position.setPoint(position.getPreviousPoint());
+                    hitbox.getCollisionBox().set(position.getPreviousPoint());
+                }
+            }
+
         }
 
-        if (collisions.size > 0) {
-            LOG.info(collisions.toString());
-        }
+    }
+
+    public static RegionQuadTree<CollisionBox> getCollisions() {
+        return collisions;
     }
 
 }

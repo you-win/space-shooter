@@ -33,4 +33,15 @@ public class PlayerBuilder {
                 .add(new NameComponent("Player")) //
                 .getEntity();
     }
+
+    public static Entity createPlayer(MdxWorld world, Vector2 position, float speed) {
+        Entity player = world.createEntity();
+        return player.edit() //
+                .add(new PlayerControllerComponent(speed)) //
+                .add(new PositionComponent(position)) //
+                .add(new SpriteComponent(new Texture("blue-square.png"))) //
+                .add(new HitboxComponent(player.getId(), position, 32f, 32f)) //
+                .add(new NameComponent("Player")) //
+                .getEntity();
+    }
 }

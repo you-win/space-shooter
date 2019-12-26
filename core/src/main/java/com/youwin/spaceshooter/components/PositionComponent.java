@@ -7,6 +7,7 @@ import org.mini2Dx.core.engine.geom.CollisionPoint;
 
 public class PositionComponent extends Component {
     private CollisionPoint point;
+    private CollisionPoint previousPoint;
 
     public PositionComponent() {
         point = new CollisionPoint();
@@ -22,5 +23,17 @@ public class PositionComponent extends Component {
 
     public CollisionPoint getPoint() {
         return point;
+    }
+
+    public void setPoint(CollisionPoint collisionPoint) {
+        point = collisionPoint;
+    }
+
+    public CollisionPoint getPreviousPoint() {
+        return previousPoint;
+    }
+
+    public void setPreviousPoint(CollisionPoint collisionPoint) {
+        previousPoint = collisionPoint;
     }
 }

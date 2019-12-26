@@ -20,16 +20,16 @@ public class PlayerControllerSystem extends IteratingSystem {
         PlayerControllerComponent playerController = playerControllerMapper.get(entityId);
         Vector2 targetDirection = playerController.getTargetDirection();
 
-        if (Gdx.input.isKeyPressed(Keys.W)) {
+        if (Gdx.input.isKeyPressed(Keys.W) || Gdx.input.isKeyPressed(Keys.UP)) {
             targetDirection.add(0f, -1f);
         }
-        if (Gdx.input.isKeyPressed(Keys.A)) {
+        if (Gdx.input.isKeyPressed(Keys.A) || Gdx.input.isKeyPressed(Keys.LEFT)) {
             targetDirection.add(-1f, 0f);
         }
-        if (Gdx.input.isKeyPressed(Keys.S)) {
+        if (Gdx.input.isKeyPressed(Keys.S) || Gdx.input.isKeyPressed(Keys.DOWN)) {
             targetDirection.add(0f, 1f);
         }
-        if (Gdx.input.isKeyPressed(Keys.D)) {
+        if (Gdx.input.isKeyPressed(Keys.D) || Gdx.input.isKeyPressed(Keys.RIGHT)) {
             targetDirection.add(1f, 0f);
         }
 
