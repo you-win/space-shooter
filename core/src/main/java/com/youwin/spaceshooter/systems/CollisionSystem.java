@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.Logger;
 import com.youwin.spaceshooter.components.HitboxComponent;
 import com.youwin.spaceshooter.components.NameComponent;
 import com.youwin.spaceshooter.components.PositionComponent;
+import com.youwin.spaceshooter.utils.CollisionLayerEnum.Layer;
 import com.youwin.spaceshooter.utils.GameManager;
 
 import org.mini2Dx.core.collisions.RegionQuadTree;
@@ -50,7 +51,11 @@ public class CollisionSystem extends IteratingSystem {
         if (collisionList.size > 1) {
             for (CollisionShape collision : collisionList) {
                 if (collision.getId() != entityId) {
-                    int collisionEntityId = collision.getId();
+                    HitboxComponent collisionHitbox = hitboxMapper.get(collision.getId());
+
+                    if (collisionHitbox.getListenLayer().equals(hitbox.getSearchLayer())) {
+
+                    }
 
                     PositionComponent position = positionMapper.get(entityId);
                     position.setPoint(position.getPreviousPoint());
