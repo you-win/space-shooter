@@ -43,23 +43,24 @@ public class CollisionSystem extends IteratingSystem {
     @Override
     protected void process(int entityId) {
         HitboxComponent hitbox = hitboxMapper.get(entityId);
-        NameComponent name = nameMapper.get(entityId);
 
         Array<CollisionBox> collisionList = collisions.getElementsWithinArea(hitbox.getCollisionBox());
 
         // An object can collide with itself
         if (collisionList.size > 1) {
             for (CollisionShape collision : collisionList) {
-                if (collision.getId() != entityId) {
+                // TODO When the screen initially loads, some strange components are collided
+                // with
+                // e.g. Given CollisionBox 0-3, on screen load CollisionBox 0 will collide
+                // with IDs 3, 6, and 9
+                if (collision.getId() != entityId && hitboxMapper.has(collision.getId())) {
                     HitboxComponent collisionHitbox = hitboxMapper.get(collision.getId());
 
                     if (collisionHitbox.getListenLayer().equals(hitbox.getSearchLayer())) {
-
+                        PositionComponent position = positionMapper.get(entityId);
+                        position.setPoint(position.getPreviousPoint());
+                        hitbox.getCollisionBox().set(position.getPreviousPoint());
                     }
-
-                    PositionComponent position = positionMapper.get(entityId);
-                    position.setPoint(position.getPreviousPoint());
-                    hitbox.getCollisionBox().set(position.getPreviousPoint());
                 }
             }
 
