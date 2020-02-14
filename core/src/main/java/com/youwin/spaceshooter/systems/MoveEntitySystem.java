@@ -40,6 +40,7 @@ public class MoveEntitySystem extends InterpolatingEntitySystem {
         float targetSpeed = 1f;
         PositionComponent position = positionMapper.get(entityId);
         HitboxComponent hitbox = hitboxMapper.get(entityId);
+        PlayerControllerComponent playerController = playerControllerMapper.getSafe(entityId, null);
         // TODO debug only?
         NameComponent name = nameComponentMapper.get(entityId);
 
@@ -47,8 +48,7 @@ public class MoveEntitySystem extends InterpolatingEntitySystem {
         // TODO see if there's a better way of doing this
         position.setPreviousPoint(new CollisionPoint(position.getPoint()));
 
-        if (playerControllerMapper.has(entityId)) {
-            PlayerControllerComponent playerController = playerControllerMapper.get(entityId);
+        if (playerController != null) {
             Vector2 playerTargetDirection = playerController.getTargetDirection();
             targetDirection.set(playerTargetDirection);
             targetSpeed = playerController.getPlayerSpeed();

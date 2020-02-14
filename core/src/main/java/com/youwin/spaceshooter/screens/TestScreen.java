@@ -12,6 +12,7 @@ import com.youwin.spaceshooter.systems.CollisionSystem;
 import com.youwin.spaceshooter.systems.MoveEntitySystem;
 import com.youwin.spaceshooter.systems.PlayerControllerSystem;
 import com.youwin.spaceshooter.systems.RenderEntitySystem;
+import com.youwin.spaceshooter.systems.ShootingSystem;
 import com.youwin.spaceshooter.utils.GameManager;
 
 import org.mini2Dx.core.game.GameContainer;
@@ -42,6 +43,7 @@ public class TestScreen extends BasicGameScreen {
         worldConfiguration //
                 .setSystem(new PlayerControllerSystem()) //
                 .setSystem(new MoveEntitySystem(true)) //
+                .setSystem(new ShootingSystem()) //
                 .setSystem(new CollisionSystem()) //
                 .setSystem(new RenderEntitySystem());
 
