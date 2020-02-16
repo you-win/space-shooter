@@ -44,6 +44,10 @@ allprojects {
 project(":core") {
     apply plugin: "java"
 
+    compileJava {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
+    }
 
     dependencies {
         compile "org.mini2Dx:mini2Dx-core:$mini2DxVersion"

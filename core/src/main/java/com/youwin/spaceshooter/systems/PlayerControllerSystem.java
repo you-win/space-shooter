@@ -5,14 +5,19 @@ import com.artemis.ComponentMapper;
 import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Logger;
 import com.youwin.spaceshooter.components.PlayerControllerComponent;
 
 public class PlayerControllerSystem extends IteratingSystem {
+    private static final Logger LOG = new Logger("[PlayerControllerSystem]", Logger.INFO);
+
     private ComponentMapper<PlayerControllerComponent> playerControllerMapper;
 
     public PlayerControllerSystem() {
         super(Aspect.all(PlayerControllerComponent.class));
+
     }
 
     @Override
@@ -32,7 +37,12 @@ public class PlayerControllerSystem extends IteratingSystem {
         if (Gdx.input.isKeyPressed(Keys.D) || Gdx.input.isKeyPressed(Keys.RIGHT)) {
             targetDirection.add(1f, 0f);
         }
-
+        if (Gdx.input.isButtonPressed(Buttons.LEFT)) {
+            System.out.println("REEE");
+        }
+        if (Gdx.input.isKeyPressed(Keys.Z)) {
+            playerController.setShouldShoot(true);
+        }
     }
 
 }

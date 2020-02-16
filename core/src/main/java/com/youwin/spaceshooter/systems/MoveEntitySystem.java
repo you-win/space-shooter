@@ -6,6 +6,8 @@ import com.artemis.InterpolatingEntitySystem;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Logger;
+import com.youwin.spaceshooter.components.BulletControllerComponent;
+import com.youwin.spaceshooter.components.EnemyControllerComponent;
 import com.youwin.spaceshooter.components.HitboxComponent;
 import com.youwin.spaceshooter.components.NameComponent;
 import com.youwin.spaceshooter.components.PlayerControllerComponent;
@@ -21,6 +23,8 @@ public class MoveEntitySystem extends InterpolatingEntitySystem {
     private ComponentMapper<PositionComponent> positionMapper;
     private ComponentMapper<HitboxComponent> hitboxMapper;
     private ComponentMapper<PlayerControllerComponent> playerControllerMapper;
+    private ComponentMapper<EnemyControllerComponent> enemyControllerMapper;
+    private ComponentMapper<BulletControllerComponent> bulletControllerMapper;
     private ComponentMapper<NameComponent> nameComponentMapper;
 
     private boolean hasScreenBoundary = Boolean.FALSE;
@@ -40,6 +44,8 @@ public class MoveEntitySystem extends InterpolatingEntitySystem {
         float targetSpeed = 1f;
         PositionComponent position = positionMapper.get(entityId);
         HitboxComponent hitbox = hitboxMapper.get(entityId);
+        // PlayerControllerComponent playerController =
+        // playerControllerMapper.getSafe(entityId, null);
         // TODO debug only?
         NameComponent name = nameComponentMapper.get(entityId);
 
@@ -47,12 +53,23 @@ public class MoveEntitySystem extends InterpolatingEntitySystem {
         // TODO see if there's a better way of doing this
         position.setPreviousPoint(new CollisionPoint(position.getPoint()));
 
+        // if (playerController != null) {
+        // Vector2 playerTargetDirection = playerController.getTargetDirection();
+        // targetDirection.set(playerTargetDirection);
+        // targetSpeed = playerController.getPlayerSpeed();
+        // playerTargetDirection.set(Vector2.Zero);
+        // }
+
         if (playerControllerMapper.has(entityId)) {
-            PlayerControllerComponent playerController = playerControllerMapper.get(entityId);
-            Vector2 playerTargetDirection = playerController.getTargetDirection();
-            targetDirection.set(playerTargetDirection);
-            targetSpeed = playerController.getPlayerSpeed();
-            playerTargetDirection.set(Vector2.Zero);
+            PlayerControllerComponent controller = playerControllerMapper.get(entityId);
+            targetDirection.set(controller.getTargetDirection());
+            targetSpeed = controller.getPlayerSpeed();
+            controller.getTargetDirection().set(Vector2.Zero);
+        } else if (enemyControllerMapper.has(entityId)) {
+            EnemyControllerComponent controller = enemyControllerMapper.get(entityId);
+        } else if (bulletControllerMapper.has(entityId)) {
+            BulletControllerComponent controller = bulletControllerMapper.get(entityId);
+            targetDirection.set(controller.getTargetDirection());
         }
 
         targetDirection.x *= targetSpeed;

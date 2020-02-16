@@ -1,7 +1,10 @@
 package com.youwin.spaceshooter.entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.artemis.Entity;
-import com.artemis.MdxWorld;
+import com.artemis.World;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.youwin.spaceshooter.components.EnemyControllerComponent;
@@ -9,38 +12,27 @@ import com.youwin.spaceshooter.components.HitboxComponent;
 import com.youwin.spaceshooter.components.NameComponent;
 import com.youwin.spaceshooter.components.PositionComponent;
 import com.youwin.spaceshooter.components.SpriteComponent;
+import com.youwin.spaceshooter.utils.CollisionLayerEnum.Layer;
 
 public class EnemyBuilder {
     public EnemyBuilder() {
 
     }
 
-    public static Entity createEnemy(MdxWorld world) {
+    public static Entity createEnemy(World world, Vector2 position, String name) {
         Entity enemy = world.createEntity();
-        return enemy.edit() //
-                .add(new PositionComponent(0f, 0f)) //
-                .add(new SpriteComponent(new Texture("red-square.png"))) //
-                .add(new EnemyControllerComponent()) //
-                .getEntity();
-    }
 
-    public static Entity createEnemy(MdxWorld world, Vector2 position, float speed) {
-        Entity enemy = world.createEntity();
-        return enemy.edit() //
-                .add(new PositionComponent(position)) //
-                .add(new SpriteComponent(new Texture("red-square.png"))) //
-                .add(new EnemyControllerComponent(speed)) //
-                .add(new HitboxComponent(enemy.getId(), position, 32f, 32f)) //
-                .getEntity();
-    }
+        List<Layer> listenLayers = new ArrayList<Layer>();
+        listenLayers.add(Layer.ENEMY);
 
-    public static Entity createEnemy(MdxWorld world, Vector2 position, String name) {
-        Entity enemy = world.createEntity();
+        List<Layer> searchLayers = new ArrayList<Layer>();
+        searchLayers.add(Layer.PLAYER);
+
         return enemy.edit() //
                 .add(new PositionComponent(position)) //
                 .add(new SpriteComponent(new Texture("red-square.png"))) //
                 .add(new EnemyControllerComponent()) //
-                .add(new HitboxComponent(enemy.getId(), position, 32f, 32f)) //
+                .add(new HitboxComponent(enemy.getId(), position, 32f, 32f, listenLayers, searchLayers)) //
                 .add(new NameComponent(name)) //
                 .getEntity();
     }

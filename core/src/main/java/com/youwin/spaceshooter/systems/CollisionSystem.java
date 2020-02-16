@@ -1,7 +1,5 @@
 package com.youwin.spaceshooter.systems;
 
-import java.util.ArrayList;
-
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.systems.IteratingSystem;
@@ -11,6 +9,7 @@ import com.youwin.spaceshooter.components.HitboxComponent;
 import com.youwin.spaceshooter.components.NameComponent;
 import com.youwin.spaceshooter.components.PositionComponent;
 import com.youwin.spaceshooter.utils.GameManager;
+import com.youwin.spaceshooter.utils.CollisionLayerEnum.Layer;
 
 import org.mini2Dx.core.collisions.RegionQuadTree;
 import org.mini2Dx.core.engine.geom.CollisionBox;
@@ -39,22 +38,49 @@ public class CollisionSystem extends IteratingSystem {
         collisions = new RegionQuadTree<CollisionBox>(9, 4, 0, 0, width, height);
     }
 
+    public CollisionSystem(float x, float y, float width, float height) {
+        super(Aspect.all(HitboxComponent.class, PositionComponent.class));
+        collisions = new RegionQuadTree<CollisionBox>(9, x, y, width, height);
+    }
+
     @Override
     protected void process(int entityId) {
         HitboxComponent hitbox = hitboxMapper.get(entityId);
-        NameComponent name = nameMapper.get(entityId);
 
+        // If this object only lets other objects collide with it, don't do any
+        // collision checking
+        if (hitbox.getSearchLayers().get(0) == Layer.NONE) {
+            return;
+        }
+
+        /*
+         * TODO for some reason, collisions are duplicated at (0, 0) for each entity
+         * This results in index out of bounds exceptions when moving to the origin. Not
+         * sure why additional collisions are generated, especially when the world
+         * object doesn't show any entities with large entity ids in the debugger. This
+         * means that the large entity ids are not generated during initialization but
+         * actually during collision checking.
+         */
         Array<CollisionBox> collisionList = collisions.getElementsWithinArea(hitbox.getCollisionBox());
 
         // An object can collide with itself
         if (collisionList.size > 1) {
             for (CollisionShape collision : collisionList) {
                 if (collision.getId() != entityId) {
-                    int collisionEntityId = collision.getId();
-
-                    PositionComponent position = positionMapper.get(entityId);
-                    position.setPoint(position.getPreviousPoint());
-                    hitbox.getCollisionBox().set(position.getPreviousPoint());
+                    // If the search layer is all, the entity should't have any other search layers
+                    if (hitbox.getSearchLayers().get(0) == Layer.ALL) {
+                        adjustPreviousPoint(hitbox, entityId);
+                    } else {
+                        HitboxComponent collisionHitbox = hitboxMapper.getSafe(collision.getId(), null);
+                        if (collisionHitbox != null) {
+                            collisionHitbox.getListenLayers().forEach(listenLayer -> {
+                                if (hitbox.getSearchLayers().contains(listenLayer)) {
+                                    adjustPreviousPoint(hitbox, entityId);
+                                    // TODO might need to break out of this loop if there are multiple collisions
+                                }
+                            });
+                        }
+                    }
                 }
             }
 
@@ -64,6 +90,12 @@ public class CollisionSystem extends IteratingSystem {
 
     public static RegionQuadTree<CollisionBox> getCollisions() {
         return collisions;
+    }
+
+    private void adjustPreviousPoint(HitboxComponent hitbox, int entityId) {
+        PositionComponent position = positionMapper.get(entityId);
+        position.setPoint(position.getPreviousPoint());
+        hitbox.getCollisionBox().set(position.getPreviousPoint());
     }
 
 }

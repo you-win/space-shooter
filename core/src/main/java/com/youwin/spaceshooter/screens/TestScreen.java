@@ -9,9 +9,12 @@ import com.badlogic.gdx.utils.Logger;
 import com.youwin.spaceshooter.entities.EnemyBuilder;
 import com.youwin.spaceshooter.entities.PlayerBuilder;
 import com.youwin.spaceshooter.systems.CollisionSystem;
+import com.youwin.spaceshooter.systems.LifetimeSystem;
 import com.youwin.spaceshooter.systems.MoveEntitySystem;
 import com.youwin.spaceshooter.systems.PlayerControllerSystem;
 import com.youwin.spaceshooter.systems.RenderEntitySystem;
+import com.youwin.spaceshooter.systems.ShootingSystem;
+import com.youwin.spaceshooter.systems.TimerSystem;
 import com.youwin.spaceshooter.utils.GameManager;
 
 import org.mini2Dx.core.game.GameContainer;
@@ -40,17 +43,21 @@ public class TestScreen extends BasicGameScreen {
 
         WorldConfiguration worldConfiguration = new WorldConfiguration();
         worldConfiguration //
+                .setSystem(new TimerSystem()) //
+                .setSystem(new LifetimeSystem()) //
                 .setSystem(new PlayerControllerSystem()) //
                 .setSystem(new MoveEntitySystem(true)) //
+                .setSystem(new ShootingSystem()) //
                 .setSystem(new CollisionSystem()) //
                 .setSystem(new RenderEntitySystem());
 
         world = new MdxWorld(worldConfiguration);
 
-        PlayerBuilder.createPlayer(world, new Vector2(0f, 0f), 5f);
+        PlayerBuilder.createPlayer(world, new Vector2(100f, 100f), 5f);
         EnemyBuilder.createEnemy(world, new Vector2(300f, 25f), "test");
         EnemyBuilder.createEnemy(world, new Vector2(50f, 400f), "test2");
         EnemyBuilder.createEnemy(world, new Vector2(300f, 400f), "test3");
+        EnemyBuilder.createEnemy(world, new Vector2(600f, 500f), "test4");
 
         LOG.info("Finished initialization");
     }
