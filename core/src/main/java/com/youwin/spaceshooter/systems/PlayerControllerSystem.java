@@ -41,7 +41,7 @@ public class PlayerControllerSystem extends IteratingSystem {
             System.out.println("REEE");
         }
         if (Gdx.input.isKeyPressed(Keys.Z)) {
-            playerController.setIsShooting(true);
+            playerController.setShouldShoot(true);
         }
     }
 

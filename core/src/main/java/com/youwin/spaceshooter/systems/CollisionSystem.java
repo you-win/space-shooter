@@ -40,6 +40,11 @@ public class CollisionSystem extends IteratingSystem {
         collisions = new RegionQuadTree<CollisionBox>(9, 4, 0, 0, width, height);
     }
 
+    public CollisionSystem(float x, float y, float width, float height) {
+        super(Aspect.all(HitboxComponent.class, PositionComponent.class));
+        collisions = new RegionQuadTree<CollisionBox>(9, x, y, width, height);
+    }
+
     @Override
     protected void process(int entityId) {
         HitboxComponent hitbox = hitboxMapper.get(entityId);
