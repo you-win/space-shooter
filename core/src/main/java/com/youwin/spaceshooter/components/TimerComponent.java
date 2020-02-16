@@ -104,6 +104,10 @@ public class TimerComponent extends Component {
         timers.put(name, new Timer(duration));
     }
 
+    public void addStartedTimer(String name, float duration) {
+        timers.put(name, new Timer(duration, true));
+    }
+
     public void removeTimer(String name) {
         timers.remove(name);
     }

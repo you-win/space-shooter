@@ -28,10 +28,10 @@ public class PlayerBuilder {
         listenLayers.add(Layer.PLAYER);
 
         List<Layer> searchLayers = new ArrayList<Layer>();
-        searchLayers.add(Layer.ALL);
+        searchLayers.add(Layer.ENEMY);
 
         TimerComponent timerComponent = new TimerComponent();
-        timerComponent.addTimer("ShootingComponent", 2f);
+        timerComponent.addTimer("ShootingComponent", 1f);
         timerComponent.addTimer("Test", 1f);
 
         return player.edit() //

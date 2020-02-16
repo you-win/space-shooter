@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.Logger;
 import com.youwin.spaceshooter.entities.EnemyBuilder;
 import com.youwin.spaceshooter.entities.PlayerBuilder;
 import com.youwin.spaceshooter.systems.CollisionSystem;
+import com.youwin.spaceshooter.systems.LifetimeSystem;
 import com.youwin.spaceshooter.systems.MoveEntitySystem;
 import com.youwin.spaceshooter.systems.PlayerControllerSystem;
 import com.youwin.spaceshooter.systems.RenderEntitySystem;
@@ -43,6 +44,7 @@ public class TestScreen extends BasicGameScreen {
         WorldConfiguration worldConfiguration = new WorldConfiguration();
         worldConfiguration //
                 .setSystem(new TimerSystem()) //
+                .setSystem(new LifetimeSystem()) //
                 .setSystem(new PlayerControllerSystem()) //
                 .setSystem(new MoveEntitySystem(true)) //
                 .setSystem(new ShootingSystem()) //

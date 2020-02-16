@@ -50,6 +50,8 @@ public class ShootingSystem extends IteratingSystem {
     }
 
     private void fire(Vector2 position) {
-        BulletBuilder.createBullet(world, position, 5f);
+        // TODO change this to something more generic
+        Vector2 proposedMovement = new Vector2(2, 0);
+        BulletBuilder.createBullet(world, position, 5f, proposedMovement);
     }
 }

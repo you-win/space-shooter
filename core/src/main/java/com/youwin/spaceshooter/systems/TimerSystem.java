@@ -2,10 +2,12 @@ package com.youwin.spaceshooter.systems;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
+import com.artemis.annotations.Wire;
 import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.utils.Logger;
 import com.youwin.spaceshooter.components.TimerComponent;
 
+@Wire
 public class TimerSystem extends IteratingSystem {
     private static final Logger LOG = new Logger("[TimerSystem]", Logger.INFO);
 
