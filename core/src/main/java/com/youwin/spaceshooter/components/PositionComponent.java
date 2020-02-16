@@ -11,14 +11,17 @@ public class PositionComponent extends Component {
 
     public PositionComponent() {
         point = new CollisionPoint();
+        previousPoint = new CollisionPoint();
     }
 
     public PositionComponent(float x, float y) {
         point = new CollisionPoint(x, y);
+        previousPoint = new CollisionPoint(x, y);
     }
 
     public PositionComponent(Vector2 position) {
         point = new CollisionPoint(position.x, position.y);
+        previousPoint = new CollisionPoint(position.x, position.y);
     }
 
     public CollisionPoint getPoint() {

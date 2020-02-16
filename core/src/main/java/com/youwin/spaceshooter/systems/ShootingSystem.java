@@ -4,12 +4,14 @@ import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.IteratingSystem;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Logger;
 import com.youwin.spaceshooter.components.EnemyControllerComponent;
 import com.youwin.spaceshooter.components.PlayerControllerComponent;
 import com.youwin.spaceshooter.components.PositionComponent;
 import com.youwin.spaceshooter.components.ShootingComponent;
 import com.youwin.spaceshooter.components.TimerComponent;
+import com.youwin.spaceshooter.entities.BulletBuilder;
 
 @Wire
 public class ShootingSystem extends IteratingSystem {
@@ -17,7 +19,7 @@ public class ShootingSystem extends IteratingSystem {
 
     private ComponentMapper<PlayerControllerComponent> playerControllerMapper;
     private ComponentMapper<EnemyControllerComponent> enemyControllerMapper;
-    private ComponentMapper<ShootingComponent> shootingMapper;
+    // private ComponentMapper<ShootingComponent> shootingMapper;
     private ComponentMapper<PositionComponent> positionMapper;
     private ComponentMapper<TimerComponent> timerMapper;
 
@@ -36,6 +38,7 @@ public class ShootingSystem extends IteratingSystem {
             if (controller.getShouldShoot()) {
                 if (timer.getIsReady()) {
                     timer.setShouldStart(true);
+                    fire(position.getPoint());
                 }
                 controller.setShouldShoot(false);
             }
@@ -46,17 +49,7 @@ public class ShootingSystem extends IteratingSystem {
         }
     }
 
-    private void startTimer() {
-
-    }
-
-    private void pauseTimer() {
-
-    }
-
-    private boolean checkTimer() {
-        // If not done, decrement
-        // Else return true
-        return true;
+    private void fire(Vector2 position) {
+        BulletBuilder.createBullet(world, position, 5f);
     }
 }

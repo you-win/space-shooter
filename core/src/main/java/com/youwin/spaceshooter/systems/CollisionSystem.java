@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
+import com.artemis.World;
 import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Logger;
@@ -49,23 +50,38 @@ public class CollisionSystem extends IteratingSystem {
     protected void process(int entityId) {
         HitboxComponent hitbox = hitboxMapper.get(entityId);
 
+        /*
+         * TODO for some reason, collisions are duplicated at (0, 0) for each entity
+         * This results in index out of bounds exceptions when moving to the origin Not
+         * sure why additional collisions are generated, especially when the world
+         * object doesn't show any entities with large entity ids in the debugger. This
+         * means that the large entity ids are not generated during initialization but
+         * actually during collision checking.
+         */
         Array<CollisionBox> collisionList = collisions.getElementsWithinArea(hitbox.getCollisionBox());
 
         // An object can collide with itself
         if (collisionList.size > 1) {
             for (CollisionShape collision : collisionList) {
+                if (!hitboxMapper.has(collision.getId())) {
+                    // This doesn't work inside an 'if' statement for some reason
+                    continue;
+                }
+
                 // TODO When the screen initially loads, some strange components are collided
                 // with
                 // e.g. Given CollisionBox 0-3, on screen load CollisionBox 0 will collide
                 // with IDs 3, 6, and 9
-                if (collision.getId() != entityId && hitboxMapper.has(collision.getId())) {
+                // LOG.info(String.valueOf(collision.getId()));
+                if (collision.getId() != entityId) {
                     HitboxComponent collisionHitbox = hitboxMapper.get(collision.getId());
-
-                    if (collisionHitbox.getListenLayer().equals(hitbox.getSearchLayer())) {
-                        PositionComponent position = positionMapper.get(entityId);
-                        position.setPoint(position.getPreviousPoint());
-                        hitbox.getCollisionBox().set(position.getPreviousPoint());
-                    }
+                    collisionHitbox.getListenLayers().forEach(listenLayer -> {
+                        if (hitbox.getSearchLayers().contains(listenLayer)) {
+                            PositionComponent position = positionMapper.get(entityId);
+                            position.setPoint(position.getPreviousPoint());
+                            hitbox.getCollisionBox().set(position.getPreviousPoint());
+                        }
+                    });
                 }
             }
 

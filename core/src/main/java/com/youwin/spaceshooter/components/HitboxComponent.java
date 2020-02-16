@@ -1,5 +1,8 @@
 package com.youwin.spaceshooter.components;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.artemis.Component;
 import com.badlogic.gdx.math.Vector2;
 import com.youwin.spaceshooter.systems.CollisionSystem;
@@ -9,32 +12,33 @@ import org.mini2Dx.core.engine.geom.CollisionBox;
 
 public class HitboxComponent extends Component {
     private CollisionBox collisionBox;
-    private Layer listenLayer;
-    private Layer searchLayer;
+    private List<Layer> listenLayers;
+    private List<Layer> searchLayers;
 
     public HitboxComponent() {
         collisionBox = new CollisionBox();
         CollisionSystem.getCollisions().add(collisionBox);
-        listenLayer = Layer.ALL;
-        searchLayer = Layer.ALL;
+        listenLayers = new ArrayList<Layer>();
+        searchLayers = new ArrayList<Layer>();
     }
 
-    public HitboxComponent(int entityId, Vector2 position, float width, float height) {
+    public HitboxComponent(int entityId, Vector2 position, float width, float height, List<Layer> listenLayers,
+            List<Layer> searchLayers) {
         collisionBox = new CollisionBox(entityId, position.x, position.y, width, height);
         CollisionSystem.getCollisions().add(collisionBox);
-        listenLayer = Layer.ALL;
-        searchLayer = Layer.ALL;
+        this.listenLayers = listenLayers;
+        this.searchLayers = searchLayers;
     }
 
     public CollisionBox getCollisionBox() {
         return collisionBox;
     }
 
-    public Layer getListenLayer() {
-        return listenLayer;
+    public List<Layer> getListenLayers() {
+        return listenLayers;
     }
 
-    public Layer getSearchLayer() {
-        return searchLayer;
+    public List<Layer> getSearchLayers() {
+        return searchLayers;
     }
 }

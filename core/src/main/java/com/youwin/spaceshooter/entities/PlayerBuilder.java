@@ -1,7 +1,10 @@
 package com.youwin.spaceshooter.entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.artemis.Entity;
-import com.artemis.MdxWorld;
+import com.artemis.World;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.youwin.spaceshooter.components.HitboxComponent;
@@ -11,33 +14,31 @@ import com.youwin.spaceshooter.components.PositionComponent;
 import com.youwin.spaceshooter.components.ShootingComponent;
 import com.youwin.spaceshooter.components.SpriteComponent;
 import com.youwin.spaceshooter.components.TimerComponent;
+import com.youwin.spaceshooter.utils.CollisionLayerEnum.Layer;
 
 public class PlayerBuilder {
     public PlayerBuilder() throws Exception {
         throw new Error();
     }
 
-    public static Entity createPlayer(MdxWorld world, Vector2 position) {
+    public static Entity createPlayer(World world, Vector2 position, float speed) {
         Entity player = world.createEntity();
-        return player.edit() //
-                .add(new PlayerControllerComponent()) //
-                .add(new PositionComponent(position)) //
-                .add(new SpriteComponent(new Texture("blue-square.png"))) //
-                .add(new HitboxComponent(player.getId(), position, 32f, 32f)) //
-                .add(new NameComponent("Player")) //
-                .getEntity();
-    }
 
-    public static Entity createPlayer(MdxWorld world, Vector2 position, float speed) {
-        Entity player = world.createEntity();
+        List<Layer> listenLayers = new ArrayList<Layer>();
+        listenLayers.add(Layer.PLAYER);
+
+        List<Layer> searchLayers = new ArrayList<Layer>();
+        searchLayers.add(Layer.ALL);
+
         TimerComponent timerComponent = new TimerComponent();
         timerComponent.addTimer("ShootingComponent", 2f);
         timerComponent.addTimer("Test", 1f);
+
         return player.edit() //
                 .add(new PlayerControllerComponent(speed)) //
                 .add(new PositionComponent(position)) //
                 .add(new SpriteComponent(new Texture("blue-square.png"))) //
-                .add(new HitboxComponent(player.getId(), position, 32f, 32f)) //
+                .add(new HitboxComponent(player.getId(), position, 32f, 32f, listenLayers, searchLayers)) //
                 .add(new NameComponent("Player")) //
                 .add(new ShootingComponent()) //
                 .add(timerComponent) //
