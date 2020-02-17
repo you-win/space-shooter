@@ -4,7 +4,7 @@ import org.mini2Dx.desktop.DesktopMini2DxConfig;
 
 import com.badlogic.gdx.backends.lwjgl.DesktopMini2DxGame;
 
-import com.youwin.spaceshooter.SpaceShooter;;
+import com.youwin.spaceshooter.SpaceShooter;
 
 public class DesktopLauncher {
 	public static void main(String[] arg) {
