@@ -43,13 +43,18 @@ public class TestScreen extends BasicGameScreen {
 
         WorldConfiguration worldConfiguration = new WorldConfiguration();
         worldConfiguration //
-                .setSystem(new TimerSystem()) //
-                .setSystem(new LifetimeSystem()) //
+                .setSystem(new TimerSystem()) // Must be first so that features that rely on timers work correctly
+                .setSystem(new LifetimeSystem()) // Runs right after timers so that expired entities are removed
+
+                // Controllers
                 .setSystem(new PlayerControllerSystem()) //
+                // .setSystem(new EnemyControllerSystem()) //
+
                 .setSystem(new MoveEntitySystem(true)) //
                 .setSystem(new ShootingSystem()) //
-                .setSystem(new CollisionSystem()) //
-                .setSystem(new RenderEntitySystem());
+                .setSystem(new CollisionSystem()) // Must come after movement and spawning since this adjusts the
+                                                  // position of objects
+                .setSystem(new RenderEntitySystem()); // Usually last since we redraw things after everything is updated
 
         world = new MdxWorld(worldConfiguration);
 

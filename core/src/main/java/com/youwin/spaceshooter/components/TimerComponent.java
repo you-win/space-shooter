@@ -112,6 +112,10 @@ public class TimerComponent extends Component {
         timers.remove(name);
     }
 
+    public boolean doesTimerExist(String name) {
+        return timers.containsKey(name);
+    }
+
     public Map<String, Timer> getTimers() {
         return timers;
     }

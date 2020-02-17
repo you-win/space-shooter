@@ -39,7 +39,6 @@ public class TimerSystem extends IteratingSystem {
         timer.setShouldStart(false);
         timer.setIsReady(false);
         timer.setIsStarted(true);
-        LOG.info("Timer starting");
     }
 
     private void tickTimer(TimerComponent.Timer timer) {
@@ -50,7 +49,6 @@ public class TimerSystem extends IteratingSystem {
             timer.setIsStarted(false);
             timer.setIsFinished(true);
             timer.setRemainingTime(timer.getInitialTime());
-            LOG.info("Timer reseting");
         }
     }
 }

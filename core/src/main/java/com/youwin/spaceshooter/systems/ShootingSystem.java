@@ -19,7 +19,7 @@ public class ShootingSystem extends IteratingSystem {
 
     private ComponentMapper<PlayerControllerComponent> playerControllerMapper;
     private ComponentMapper<EnemyControllerComponent> enemyControllerMapper;
-    // private ComponentMapper<ShootingComponent> shootingMapper;
+    private ComponentMapper<ShootingComponent> shootingMapper;
     private ComponentMapper<PositionComponent> positionMapper;
     private ComponentMapper<TimerComponent> timerMapper;
 
@@ -29,7 +29,7 @@ public class ShootingSystem extends IteratingSystem {
 
     @Override
     protected void process(int entityId) {
-        // ShootingComponent shootingComponent = shootingMapper.get(entityId);
+        ShootingComponent shootingComponent = shootingMapper.get(entityId);
         PositionComponent position = positionMapper.get(entityId);
         TimerComponent.Timer timer = timerMapper.get(entityId).getTimer("ShootingComponent");
 
@@ -38,7 +38,7 @@ public class ShootingSystem extends IteratingSystem {
             if (controller.getShouldShoot()) {
                 if (timer.getIsReady()) {
                     timer.setShouldStart(true);
-                    fire(position.getPoint());
+                    fire(shootingComponent.getShotSpeed(), position.getPoint());
                 }
                 controller.setShouldShoot(false);
             }
@@ -49,9 +49,8 @@ public class ShootingSystem extends IteratingSystem {
         }
     }
 
-    private void fire(Vector2 position) {
+    private void fire(Vector2 shotSpeed, Vector2 position) {
         // TODO change this to something more generic
-        Vector2 proposedMovement = new Vector2(2, 0);
-        BulletBuilder.createBullet(world, position, 5f, proposedMovement);
+        BulletBuilder.createBullet(world, position, 5f, shotSpeed);
     }
 }

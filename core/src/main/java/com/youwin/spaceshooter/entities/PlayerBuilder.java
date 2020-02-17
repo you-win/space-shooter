@@ -31,7 +31,7 @@ public class PlayerBuilder {
         searchLayers.add(Layer.ENEMY);
 
         TimerComponent timerComponent = new TimerComponent();
-        timerComponent.addTimer("ShootingComponent", 1f);
+        timerComponent.addTimer("ShootingComponent", 0.25f);
         timerComponent.addTimer("Test", 1f);
 
         return player.edit() //
@@ -40,7 +40,7 @@ public class PlayerBuilder {
                 .add(new SpriteComponent(new Texture("blue-square.png"))) //
                 .add(new HitboxComponent(player.getId(), position, 32f, 32f, listenLayers, searchLayers)) //
                 .add(new NameComponent("Player")) //
-                .add(new ShootingComponent()) //
+                .add(new ShootingComponent(new Vector2(10, 0))) //
                 .add(timerComponent) //
                 .getEntity();
     }

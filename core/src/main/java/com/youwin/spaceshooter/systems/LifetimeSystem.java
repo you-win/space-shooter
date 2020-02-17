@@ -21,10 +21,10 @@ public class LifetimeSystem extends IteratingSystem {
     protected void process(int entityId) {
         TimerComponent timerComponent = timerMapper.get(entityId);
 
-        if (timerComponent.getTimers().containsKey("Lifetime")) {
+        if (timerComponent.doesTimerExist("Lifetime")) {
             TimerComponent.Timer timer = timerComponent.getTimer("Lifetime");
+            // TODO refactor to make use of entity pooling
             if (timer.getIsFinished()) {
-                LOG.info("Deleting entity");
                 world.delete(entityId);
             }
         }
