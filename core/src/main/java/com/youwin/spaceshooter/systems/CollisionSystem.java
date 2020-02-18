@@ -30,18 +30,19 @@ public class CollisionSystem extends IteratingSystem {
 
     public CollisionSystem() {
         super(Aspect.all(HitboxComponent.class, PositionComponent.class));
-        collisions = new RegionQuadTree<CollisionBox>(9, 4, 0, 0, GameManager.screenWidth, GameManager.screenHeight);
+        collisions = new RegionQuadTree<CollisionBox>(100, 4, -10, -10, GameManager.screenWidth + 10,
+                GameManager.screenHeight + 10);
     }
 
-    public CollisionSystem(float width, float height) {
-        super(Aspect.all(HitboxComponent.class, PositionComponent.class));
-        collisions = new RegionQuadTree<CollisionBox>(9, 4, 0, 0, width, height);
-    }
+    // public CollisionSystem(float width, float height) {
+    // super(Aspect.all(HitboxComponent.class, PositionComponent.class));
+    // collisions = new RegionQuadTree<CollisionBox>(9, 4, 0, 0, width, height);
+    // }
 
-    public CollisionSystem(float x, float y, float width, float height) {
-        super(Aspect.all(HitboxComponent.class, PositionComponent.class));
-        collisions = new RegionQuadTree<CollisionBox>(9, x, y, width, height);
-    }
+    // public CollisionSystem(float x, float y, float width, float height) {
+    // super(Aspect.all(HitboxComponent.class, PositionComponent.class));
+    // collisions = new RegionQuadTree<CollisionBox>(9, x, y, width, height);
+    // }
 
     @Override
     protected void process(int entityId) {
@@ -53,14 +54,6 @@ public class CollisionSystem extends IteratingSystem {
             return;
         }
 
-        /*
-         * TODO for some reason, collisions are duplicated at (0, 0) for each entity
-         * This results in index out of bounds exceptions when moving to the origin. Not
-         * sure why additional collisions are generated, especially when the world
-         * object doesn't show any entities with large entity ids in the debugger. This
-         * means that the large entity ids are not generated during initialization but
-         * actually during collision checking.
-         */
         Array<CollisionBox> collisionList = collisions.getElementsWithinArea(hitbox.getCollisionBox());
 
         // An object can collide with itself
