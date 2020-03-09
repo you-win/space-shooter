@@ -16,10 +16,7 @@ public class HitboxComponent extends Component {
     private List<Layer> searchLayers;
 
     public HitboxComponent() {
-        collisionBox = new CollisionBox();
-        CollisionSystem.getCollisions().add(collisionBox);
-        listenLayers = new ArrayList<Layer>();
-        searchLayers = new ArrayList<Layer>();
+
     }
 
     public HitboxComponent(int entityId, Vector2 position, float width, float height, List<Layer> listenLayers,
@@ -28,6 +25,10 @@ public class HitboxComponent extends Component {
         CollisionSystem.getCollisions().add(collisionBox);
         this.listenLayers = listenLayers;
         this.searchLayers = searchLayers;
+    }
+
+    public void cleanup() {
+        CollisionSystem.getCollisions().remove(collisionBox);
     }
 
     public CollisionBox getCollisionBox() {

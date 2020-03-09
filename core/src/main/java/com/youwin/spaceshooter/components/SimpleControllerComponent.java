@@ -3,16 +3,18 @@ package com.youwin.spaceshooter.components;
 import com.artemis.Component;
 import com.badlogic.gdx.math.Vector2;
 
-public class EnemyControllerComponent extends Component implements GenericController {
+public class SimpleControllerComponent extends Component implements GenericController {
     private Vector2 targetDirection;
-    private float speed = 1f;
+    // TODO might not need speed?
+    private float speed;
 
-    public EnemyControllerComponent() {
-        targetDirection = new Vector2(Vector2.Zero);
+    public SimpleControllerComponent() {
+        targetDirection = Vector2.Zero;
+        speed = 2f;
     }
 
-    public EnemyControllerComponent(float speed) {
-        targetDirection = new Vector2(Vector2.Zero);
+    public SimpleControllerComponent(float speed) {
+        targetDirection = Vector2.Zero;
         this.speed = speed;
     }
 
@@ -22,8 +24,8 @@ public class EnemyControllerComponent extends Component implements GenericContro
     }
 
     @Override
-    public void setTargetDirection(Vector2 newTargetDirection) {
-        targetDirection = newTargetDirection;
+    public void setTargetDirection(Vector2 targetDirection) {
+        this.targetDirection = targetDirection;
     }
 
     @Override

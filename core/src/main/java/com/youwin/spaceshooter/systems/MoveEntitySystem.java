@@ -8,10 +8,12 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Logger;
 import com.youwin.spaceshooter.components.BulletControllerComponent;
 import com.youwin.spaceshooter.components.EnemyControllerComponent;
+import com.youwin.spaceshooter.components.GenericController;
 import com.youwin.spaceshooter.components.HitboxComponent;
 import com.youwin.spaceshooter.components.NameComponent;
 import com.youwin.spaceshooter.components.PlayerControllerComponent;
 import com.youwin.spaceshooter.components.PositionComponent;
+import com.youwin.spaceshooter.components.SimpleControllerComponent;
 import com.youwin.spaceshooter.utils.GameManager;
 
 import org.mini2Dx.core.engine.geom.CollisionPoint;
@@ -25,6 +27,7 @@ public class MoveEntitySystem extends InterpolatingEntitySystem {
     private ComponentMapper<PlayerControllerComponent> playerControllerMapper;
     private ComponentMapper<EnemyControllerComponent> enemyControllerMapper;
     private ComponentMapper<BulletControllerComponent> bulletControllerMapper;
+    private ComponentMapper<SimpleControllerComponent> simpleControllerMapper;
     private ComponentMapper<NameComponent> nameComponentMapper;
 
     private boolean hasScreenBoundary = Boolean.FALSE;
@@ -44,23 +47,30 @@ public class MoveEntitySystem extends InterpolatingEntitySystem {
         float targetSpeed = 1f;
         PositionComponent position = positionMapper.get(entityId);
         HitboxComponent hitbox = hitboxMapper.get(entityId);
-        // TODO debug only?
-        NameComponent name = nameComponentMapper.get(entityId);
 
         // Store the previous position for use in collisions
         // TODO see if there's a better way of doing this
         position.setPreviousPoint(new CollisionPoint(position.getPoint()));
+        // position.getPreviousPoint().set(position.getPoint().cpy());
 
+        GenericController controller;
+        // TODO refactor this, seems inefficient
         if (playerControllerMapper.has(entityId)) {
-            PlayerControllerComponent controller = playerControllerMapper.get(entityId);
+            controller = playerControllerMapper.get(entityId);
             targetDirection.set(controller.getTargetDirection());
-            targetSpeed = controller.getPlayerSpeed();
+            targetSpeed = controller.getSpeed();
             controller.getTargetDirection().set(Vector2.Zero);
         } else if (enemyControllerMapper.has(entityId)) {
-            EnemyControllerComponent controller = enemyControllerMapper.get(entityId);
+            controller = enemyControllerMapper.get(entityId);
         } else if (bulletControllerMapper.has(entityId)) {
-            BulletControllerComponent controller = bulletControllerMapper.get(entityId);
+            controller = bulletControllerMapper.get(entityId);
             targetDirection.set(controller.getTargetDirection());
+            targetSpeed = controller.getSpeed();
+        } else if (simpleControllerMapper.has(entityId)) {
+            controller = simpleControllerMapper.get(entityId);
+            targetDirection.set(controller.getTargetDirection());
+            targetSpeed = controller.getSpeed();
+            // controller.getTargetDirection().set(Vector2.Zero);
         }
 
         targetDirection.x *= targetSpeed;

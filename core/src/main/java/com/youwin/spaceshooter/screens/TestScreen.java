@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Logger;
 import com.youwin.spaceshooter.entities.EnemyBuilder;
 import com.youwin.spaceshooter.entities.PlayerBuilder;
+import com.youwin.spaceshooter.systems.BodyLinkSystem;
 import com.youwin.spaceshooter.systems.CollisionSystem;
 import com.youwin.spaceshooter.systems.LifetimeSystem;
 import com.youwin.spaceshooter.systems.MoveEntitySystem;
@@ -17,6 +18,8 @@ import com.youwin.spaceshooter.systems.ShootingSystem;
 import com.youwin.spaceshooter.systems.TimerSystem;
 import com.youwin.spaceshooter.utils.GameManager;
 
+import org.mini2Dx.core.Mdx;
+import org.mini2Dx.core.di.annotation.Autowired;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
@@ -49,6 +52,8 @@ public class TestScreen extends BasicGameScreen {
                 // Controllers
                 .setSystem(new PlayerControllerSystem()) //
                 // .setSystem(new EnemyControllerSystem()) //
+
+                .setSystem(new BodyLinkSystem()) //
 
                 .setSystem(new MoveEntitySystem(true)) //
                 .setSystem(new ShootingSystem()) //
